@@ -4,6 +4,7 @@ from __future__ import print_function, unicode_literals
 import calendar
 import fnmatch
 import logging
+import json
 import os
 from codecs import open
 from collections import defaultdict
@@ -279,6 +280,10 @@ class ArticlesGenerator(CachingGenerator):
 
     def generate_feeds(self, writer):
         """Generate the feeds from the current context, and output files."""
+
+        if self.settings.get('JSON_FEED'):
+            writer.write_feed(self.articles, self.context,
+                              self.settings['JSON_FEED'], feed_type='json')
 
         if self.settings.get('FEED_ATOM'):
             writer.write_feed(self.articles, self.context,

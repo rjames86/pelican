@@ -31,7 +31,15 @@ class Writer(object):
         self._overridden_files = set()
 
     def _create_new_feed(self, feed_type, feed_title, context):
-        feed_class = Rss201rev2Feed if feed_type == 'rss' else Atom1Feed
+        if feed_type == 'rss':
+            feed_class = Rss201rev2Feed
+        elif feed_type == 'json':
+            from json_feed import JsonFeedGenerator
+            feed_class = JsonFeedGenerator
+        else:
+            feed_class = Atom1Feed
+
+        # feed_class = Rss201rev2Feed if feed_type == 'rss' else Atom1Feed
         if feed_title:
             feed_title = context['SITENAME'] + ' - ' + feed_title
         else:
